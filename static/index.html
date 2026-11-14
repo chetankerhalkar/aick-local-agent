@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="aick-session-token" content="__SESSION_TOKEN__">
+  <meta name="description" content="The local workspace for AICK Local Agent. Runtime readiness and meeting context, on your PC.">
+  <title>AICK Local Agent</title>
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/styles.css">
+  <script src="/static/app.js" type="module"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to dashboard</a>
+  <aside class="sidebar" aria-label="Workspace navigation">
+    <a class="brand" href="/" aria-label="AICK Local Agent dashboard">
+      <span class="brand-mark" aria-hidden="true">a<span>i</span></span>
+      <span>AICK<span class="brand-sub">LOCAL AGENT</span></span>
+    </a>
+    <div class="nav-label">WORKSPACE</div>
+    <nav>
+      <a class="nav-item active" href="#main" aria-current="page"><span aria-hidden="true">▦</span> Overview</a>
+      <a class="nav-item" href="#transcript"><span aria-hidden="true">≡</span> Transcript <span class="nav-count" id="nav-count">0</span></a>
+      <a class="nav-item" href="#outcomes"><span aria-hidden="true">☑</span> Actions & decisions</a>
+    </nav>
+    <div class="sidebar-note">
+      <div class="local-symbol" aria-hidden="true">⌂</div>
+      <strong>On your machine.</strong>
+      <p>Local inference.<br>Local storage.<br>Your meeting, in view.</p>
+      <span class="sidebar-chip">127.0.0.1 : 8765</span>
+    </div>
+    <div class="sidebar-footer"><span class="tiny-dot"></span> Stage 06 <span>Review & exports</span></div>
+  </aside>
+
+  <main id="main" tabindex="-1">
+    <header class="page-header">
+      <div><p class="eyebrow">YOUR LOCAL MEETING WORKSPACE</p><h1>AICK Local Agent</h1><p class="subtitle">Meeting context. Clear outcomes. On your PC.</p></div>
+      <span class="privacy-tag"><span aria-hidden="true">⌂</span> Inference & storage stay local</span>
+    </header>
+
+    <section class="session-card" aria-labelledby="session-heading">
+      <div class="session-top">
+        <div class="session-heading"><div class="session-icon" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div><div><p class="eyebrow">MEETING SESSION</p><h2 id="session-heading">Ready when you are.</h2></div></div>
+        <span class="state" data-state="not connected" id="meeting-state">not connected</span>
+      </div>
+      <p class="session-description">A human joins the meeting as a visible attendee; the host admits it. Select that meeting tab in Chrome’s sharing picker.</p>
+      <div class="session-bottom"><div class="platforms"><span>Google Meet</span><span>Microsoft Teams web</span><span class="chrome-note">in Chrome</span></div><div class="capture-status"><span class="tiny-dot"></span><span id="capture-status-text">Audio capture is off</span></div></div>
+      <div class="session-data"><span id="session-source">Empty local session</span><span id="session-id"></span><span class="state" id="analysis-state" data-state="not connected">not connected</span></div>
+    </section>
+
+    <section class="panel live-panel" aria-labelledby="live-heading">
+      <div class="panel-heading"><h2 id="live-heading">Listen to meeting</h2><span id="capture-state" class="state" data-state="not connected">not connected</span></div>
+      <div class="live-body"><p id="capture-message" role="status">Choose Chrome Tab → your meeting → Share tab audio. The picker opens only when you click Listen.</p>
+        <div class="live-controls"><button id="listen-meeting" type="button" class="button primary">Listen to meeting</button><button id="pause-listening" type="button" class="button secondary" disabled>Pause transcription</button><button id="stop-listening" type="button" class="button stop" disabled>Stop</button></div>
+        <div class="live-meter"><label for="input-meter">Live input level</label><meter id="input-meter" min="0" max="1" value="0"></meter><span id="input-level">No input level</span></div>
+        <div class="live-metrics"><span id="capture-format">Uses the actual AudioContext sample rate</span><span id="capture-backlog">0 / 2 queued</span><span id="capture-latency">No ASR result yet</span></div>
+        <p id="capture-warning" class="notice" role="alert" hidden></p><p id="capture-release" class="upload-help">No capture permission is retained by the application.</p>
+        <p class="upload-help">Only audio is processed. Video is never rendered, recorded, transmitted, or saved. Captured audio is never routed to speakers. Ask agent and Update action board run only when clicked.</p>
+        <details class="capture-details"><summary>Capture trace & intervals not transcribed</summary><ul id="capture-gaps"></ul><pre id="capture-trace">No capture has started.</pre></details>
+        <details class="replay-details"><summary>Local pipeline check · Sample replay</summary><p>Explicitly replay the prepared speech WAV silently through the same audio worklet and local WebSocket. Results are labeled Sample replay, not live meeting audio. Eight seconds of trailing silence complete the last window.</p><button id="replay-sample" type="button" class="button secondary">Run prepared WAV replay</button></details>
+      </div>
+    </section>
+
+    <section class="runtime-section" aria-labelledby="runtime-heading">
+      <div class="section-heading"><div><h2 id="runtime-heading">Local runtime <span class="summary-count" id="ready-count">— / 3 ready</span></h2><p>Actual checks from this PC. No sample activity.</p></div><button type="button" class="button secondary refresh" id="refresh"><span aria-hidden="true">↻</span> Recheck readiness</button></div>
+      <div class="notice" id="notice" role="alert" hidden></div>
+      <div class="health-grid" aria-live="polite">
+        <article class="health-card"><div class="health-top"><span class="component-icon" aria-hidden="true">✳</span><span class="state" id="llama-state" data-state="not connected">not connected</span></div><h3>llama.cpp</h3><p class="component-type">LOCAL LANGUAGE MODEL</p><p class="health-detail" id="llama-detail">Waiting for a runtime check.</p><div class="health-meta" id="llama-meta">Configured local endpoint</div></article>
+        <article class="health-card"><div class="health-top"><span class="component-icon" aria-hidden="true">≋</span><span class="state" id="whisper-state" data-state="not connected">not connected</span></div><h3>Whisper small.en</h3><p class="component-type">LOCAL MODEL FILES · CPU / INT8</p><p class="health-detail" id="whisper-detail">Waiting for a runtime check.</p><div class="health-meta" id="whisper-meta">Configured local directory</div></article>
+        <article class="health-card"><div class="health-top"><span class="component-icon" aria-hidden="true">◖))</span><span class="state" id="speech-state" data-state="not connected">not connected</span></div><h3>Windows speech</h3><p class="component-type">INSTALLED SYSTEM.SPEECH VOICE</p><p class="health-detail" id="speech-detail">Waiting for a runtime check.</p><div class="health-meta" id="speech-meta">No speech generated</div></article>
+      </div>
+      <div class="runtime-footer"><span id="checked-at" role="status">Readiness has not been checked.</span><span class="state" id="runtime-state" data-state="not connected">not connected</span></div>
+      <details class="diagnostics"><summary>Runtime details</summary><dl><dt>Configuration</dt><dd id="config-path">Not checked</dd><dt>LLM health endpoint</dt><dd id="llama-path">Not checked</dd><dt>Whisper directory</dt><dd id="whisper-path">Not checked</dd></dl><p>Whisper readiness verifies readable model files; it does not run transcription. Voice readiness selects an installed voice without speaking.</p></details>
+    </section>
+
+    <section class="panel input-panel" aria-labelledby="input-heading">
+      <div class="panel-heading"><h2 id="input-heading">Transcript sources</h2><button type="button" id="new-session" class="button secondary">New empty session</button></div>
+      <div class="audio-upload">
+        <div class="audio-upload-heading"><div><h3>Transcribe an uploaded WAV</h3><p>Local English transcription. Uploaded audio stays separate from live meeting capture.</p></div><span class="stage-tag">WHISPER SMALL.EN · CPU / INT8</span></div>
+        <div class="audio-upload-fields"><label for="wav-file">WAV file<input id="wav-file" type="file" accept=".wav,audio/wav,audio/x-wav"></label><label for="audio-offset">Session offset (seconds)<input id="audio-offset" type="number" min="0" max="86400" step="0.01" value="0"></label><button id="transcribe-wav" type="button" class="button primary" disabled>Transcribe uploaded WAV</button></div>
+        <p class="upload-help">PCM WAV · up to 25 MiB / 180 seconds · one job at a time. File offsets are preserved; optional session offset defaults to zero. No speaker identities are inferred. Temporary audio is deleted after processing.</p>
+        <div id="audio-report" class="audio-report" role="status" hidden><div class="audio-report-heading"><strong>Uploaded audio</strong><span id="audio-state" class="state" data-state="not connected">not connected</span></div><p id="audio-message"></p><dl class="audio-metrics"><div><dt>Audio duration</dt><dd id="audio-duration">Pending</dd></div><div><dt>Transcription duration</dt><dd id="transcription-duration">Pending</dd></div><div><dt>Segments added</dt><dd id="audio-added">0</dd></div></dl><p id="audio-cleanup" class="upload-help"></p><details><summary>Transcription details & recent jobs</summary><p>Transcription timing excludes model loading and decoding. All timings are measured locally.</p><pre id="audio-trace"></pre></details></div>
+      </div>
+      <div class="sample-controls"><label for="sample-select">Import a Sample transcript into a new session</label><div class="sample-row"><select id="sample-select"><option value="">Choose a prepared sample…</option><option value="01_launch_meeting.txt">01 · Launch meeting</option><option value="02_conflicts_and_injection.txt">02 · Conflicts & quoted injection</option><option value="03_no_actions.txt">03 · Brainstorming, no actions</option></select><button type="button" id="import-sample" class="button secondary" disabled>Import sample</button></div><p>Explicit import replaces this tab’s current meeting session. Samples are never labeled live audio.</p></div>
+      <details class="typed-input"><summary>Add a typed transcript segment</summary><div class="typed-fields"><label>Start (seconds)<input id="segment-start" type="number" min="0" max="86400" step="0.1" value="0"></label><label>End (optional seconds)<input id="segment-end" type="number" min="0" max="86400" step="0.1" placeholder="Unknown"></label><label>Speaker label (optional)<input id="segment-speaker" type="text" maxlength="80" placeholder="Unknown speaker"></label></div><label for="segment-text">Transcript text</label><textarea id="segment-text" rows="3" maxlength="2000" placeholder="Enter what was said. Quoted instructions are treated as data."></textarea><div class="typed-bottom"><p>Labels are supplied by you; no voice identities are inferred. Unknown end times stay unknown.</p><button type="button" id="add-segment" class="button secondary">Add typed segment</button></div></details>
+      <div id="meeting-notice" class="notice" role="alert" hidden></div>
+    </section>
+
+    <div class="workspace-grid">
+      <section class="panel transcript-panel" id="transcript" aria-labelledby="transcript-heading">
+        <div class="panel-heading"><h2 id="transcript-heading">Transcript</h2><span class="count" id="transcript-count">0 segments</span></div>
+        <div class="empty-state" id="transcript-empty"><span class="empty-icon lines" aria-hidden="true"><i></i><i></i><i></i></span><h3>No transcript yet</h3><p>Upload a WAV, add typed text, or explicitly import a prepared sample.</p><span class="empty-label">Nothing captured or imported</span></div>
+        <ol class="entries" id="transcript-list" aria-label="Transcript segments"></ol>
+        <div class="panel-footer"><span class="tiny-dot"></span><span id="transcript-source-note">No source connected</span></div>
+      </section>
+      <section class="panel outcomes-panel" id="outcomes" aria-labelledby="outcomes-heading">
+        <div class="panel-heading"><h2 id="outcomes-heading">Actions & decisions</h2><span class="count" id="outcomes-count">0 items</span></div><div class="board-toolbar"><button type="button" id="update-board" class="button secondary" disabled>Update action board</button><span>All results require review.</span></div>
+        <div class="empty-state" id="outcomes-empty"><span class="empty-icon check-icon" aria-hidden="true">✓</span><h3>No outcomes yet</h3><p>Run Update action board after adding a transcript. No action is executed or approved.</p><span class="empty-label">No confirmed tasks are assumed</span></div>
+        <ul class="entries" id="outcomes-list" aria-label="Actions and decisions"></ul>
+        <div class="panel-footer"><span class="tiny-dot"></span> “Confirmed” means stated in the transcript, not approved by you.</div>
+      </section>
+    </div>
+
+    <section class="panel question-panel" aria-labelledby="question-heading"><div class="question-title"><div><h2 id="question-heading">Ask about the meeting</h2><p>Retrieve local evidence, propose an answer, check citations, then review.</p></div><span class="stage-tag">LOCAL LLAMA.CPP · TEMPERATURE 0 · SEED 42</span></div><label class="sr-only" for="question">Question about the meeting</label><textarea id="question" rows="2" maxlength="1500" placeholder="What would you like to know?" aria-describedby="question-help"></textarea><div class="question-bottom"><span id="question-help">Add a transcript before asking.</span><button class="button primary" type="button" id="ask-agent" disabled>Ask agent</button></div></section>
+
+    <section class="panel result-panel" aria-labelledby="result-heading"><div class="panel-heading"><h2 id="result-heading">Answer & evidence review</h2><span id="result-mode" class="count">No analysis yet</span></div><div id="scope-notice" class="scope-notice">Input budget: 4,480 tokens · output maximum: 3,200 · server limit: 8,192. Omitted context will be listed explicitly.</div><div id="stale-notice" class="notice" hidden>Transcript changed. This result is from an older revision; run analysis again.</div><p id="review-notice" class="review-notice">A matching quote does not prove a claim. Unsupported and ambiguous results will be flagged.</p><h3 class="result-label">Answer</h3><ul class="entries" id="answer-list"></ul><h3 class="result-label">Unresolved questions</h3><ul class="entries" id="questions-list"></ul><details class="evidence-details"><summary>Evidence index · exact source quotes</summary><div id="evidence-list"></div></details><details class="trace-details"><summary>Workflow, tool & evidence traces</summary><p>Host-controlled local transcript search/read only. Model proposals and validation results are shown as data; no external tools are available.</p><pre id="trace-output">No workflow has run.</pre></details><details class="history-details"><summary>Previous analyses in this session (up to 5)</summary><div id="history-list"></div></details></section>
+
+    <section class="panel speech-panel" id="speech-output" aria-labelledby="speech-heading">
+      <div class="panel-heading"><h2 id="speech-heading">Speak a reviewed reply</h2><span id="speech-output-state" class="state" data-state="not connected">not connected</span></div>
+      <div class="speech-body"><p>Present <strong>this AICK dashboard tab with tab audio</strong> in Meet or Teams to let attendees hear the reply. The agent attendee stays visible. Your microphone is not used for speech output.</p>
+        <label for="speech-select">1. Select a visible answer</label><select id="speech-select" disabled><option value="">Choose one visible answer…</option></select>
+        <p class="speech-preview" id="speech-preview">No answer selected.</p><p class="upload-help" id="speech-review">Read the evidence and any review flags above before approving speech.</p>
+        <label class="speech-approval"><input id="speech-approve" type="checkbox" disabled><span>2. I reviewed this exact text and approve speaking it to the meeting.</span></label>
+        <div class="speech-controls"><button class="button primary" id="speak-reply" type="button" disabled>Speak reply</button><button class="button secondary" id="stop-speaking" type="button" disabled>Stop speaking</button><button class="button primary" id="play-reply" type="button" hidden>Play reply</button><span id="speech-elapsed"></span></div>
+        <audio id="reply-audio" preload="none" aria-label="Selected agent reply"></audio>
+        <p id="speech-message" role="status">Select an answer and approve its exact text before speaking.</p><p id="speech-pause" class="notice" role="status" hidden></p>
+        <p class="upload-help">Installed Windows voice · up to 1,000 characters / 90 seconds · local WAV deleted after playback or Stop. No automatic replies. Listening remains paused while waiting for Play.</p>
+        <details><summary>Speech & listening-pause trace</summary><pre id="speech-trace">No speech has been requested.</pre></details>
+      </div>
+    </section>
+    <section class="panel review-panel" id="presenter-review" aria-labelledby="presenter-heading">
+      <div class="panel-heading"><h2 id="presenter-heading">Presenter task review</h2><span class="stage-tag">YOUR APPROVAL · LOCAL AUDIT HISTORY</span></div>
+      <div class="review-body"><p>Review a proposed task, save any edits, then approve or reject it. Saving an edit removes its prior approval. Each new analysis requires fresh approvals.</p>
+        <label for="review-action">Proposed task</label><select id="review-action"><option value="">Choose a proposed task…</option></select><p id="review-status">No proposal selected</p>
+        <details><summary>Original proposal, evidence & validation flags</summary><pre id="review-original">Select a proposal to inspect its original fields, evidence and validation flags.</pre></details>
+        <label for="review-task">Task text</label><textarea id="review-task" rows="3" maxlength="600" disabled></textarea>
+        <div class="review-fields"><label>Owner · blank means unresolved<input id="review-owner" maxlength="80" disabled></label><label>Explicit due date · optional<input id="review-date" type="date" disabled></label><label>Due text · optional<input id="review-due" maxlength="120" placeholder="Leave blank if unresolved" disabled></label></div>
+        <label for="review-note">Presenter note · optional</label><input id="review-note" maxlength="500" disabled>
+        <p class="upload-help">Edits are attributed to the presenter. Original evidence stays unchanged and does not automatically support edited wording, owners or dates. Superseded tasks and invalid citations cannot be approved.</p>
+        <p id="review-unsaved" class="notice" hidden>Unsaved changes. Save the edit before approving it.</p>
+        <div class="review-buttons"><button id="save-task-edit" type="button" class="button secondary" disabled>Save edit for review</button><button id="approve-task" type="button" class="button primary" disabled>Approve task</button><button id="reject-task" type="button" class="button secondary" disabled>Reject task</button></div>
+      </div>
+    </section>
+    <section class="panel export-panel" aria-labelledby="export-heading">
+      <div class="panel-heading"><h2 id="export-heading">Approved meeting report</h2><span class="stage-tag">MARKDOWN & CSV · LOCAL FILES</span></div>
+      <div class="review-body"><p id="approved-summary">No approved tasks yet.</p><h3>Draft follow-up</h3><pre id="draft-follow-up">No current report preview.</pre>
+        <p class="upload-help">Drafted from approved actions and supported decisions only. Nothing is sent. Rejected and unapproved proposals appear only in the labeled audit history; original transcript statements remain source material.</p>
+        <label for="export-title">Report title</label><input id="export-title" maxlength="80" value="Meeting report">
+        <div class="review-buttons"><button id="export-approved" type="button" class="button primary" disabled>Export approved meeting report</button></div>
+        <p class="upload-help">Stop capture before exporting. Files stay in this app’s fixed exports/session directory. Filenames are sanitized; formula-like CSV cells are prefixed with “Text: ”. No audio is included.</p>
+        <ul id="export-results" class="export-results"></ul><details id="export-inspection"><summary>Inspect exported file as plain text</summary><pre id="export-file-preview">No export file selected.</pre></details>
+        <details><summary>Timestamped action log · proposals, failures, corrections, approvals & exports</summary><pre id="action-log">No proposals or presenter actions in this session.</pre></details>
+      </div>
+    </section>
+
+    <footer class="page-footer"><p>Meet & Teams carry the online call. Inference and storage are local.</p><div class="state-legend" aria-label="State legend"><span>States:</span><span>not connected</span><span>ready</span><span>listening</span><span>processing</span><span>error</span></div></footer>
+    <noscript><p class="notice">Enable JavaScript to see actual runtime readiness. No health checks have been displayed.</p></noscript>
+  </main>
+</body>
+</html>
+
