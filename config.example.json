@@ -1,0 +1,13 @@
+{
+  "python": ".venv/Scripts/python.exe",
+  "app_host": "127.0.0.1",
+  "app_port": 8765,
+  "llm_base_url": "http://127.0.0.1:8080/v1",
+  "llm_model_alias": "aick-local",
+  "llm_model_path": "models/qwen2.5-7b-instruct-q4_k_m-00001-of-00002.gguf",
+  "asr_model_path": "models/whisper-small.en",
+  "asr_device": "cpu",
+  "asr_compute_type": "int8",
+  "asr_language": "en",
+  "speech_voice": ""
+}

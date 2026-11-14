@@ -1,0 +1,8 @@
+{
+  "name": "aick-local-agent",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test test_stage4.mjs test_stage5.mjs test_review.mjs"
+  }
+}

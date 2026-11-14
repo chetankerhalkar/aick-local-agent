@@ -1,0 +1,53 @@
+# Local configuration and credentials
+config.json
+prepared-config.json
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Models, binaries and downloaded dependencies
+models/
+bin/
+.venv/
+venv/
+node_modules/
+*.gguf
+*.bin
+*.safetensors
+*.onnx
+*.exe
+*.dll
+
+# Meeting data, temporary media and local reports
+work/
+exports/
+samples/
+*.wav
+*.mp3
+*.mp4
+*.webm
+*.log
+
+# Private preparation, evaluation and authoring materials
+evaluation/
+preparation/
+prepared/
+prompts/
+prompt-guide*
+*prompt*guide*
+prepared-*.json
+requirements.lock.txt
+REVIEW.md
+
+# Generated development artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
